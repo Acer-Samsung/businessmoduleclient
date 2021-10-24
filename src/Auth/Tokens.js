@@ -1,0 +1,1 @@
+export const TOKEN_NAME = "BUSINESS_MODULE"
