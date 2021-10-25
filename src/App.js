@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from "./Auth/PrivateRoute";
 import Admin from "./Pages/Admin";
 import ErrorPage from "./Components/ErrorPage";
+import SignUp from "./Auth/SignUp";
+import Vacancies from "./Pages/Vacancies";
 
 function App() {
     return (
@@ -15,7 +17,8 @@ function App() {
                 <Switch>
                     <Route exact path={"/"} component={HomePage}/>
                     <Route exact path={"/SignIn"} component={SignIn}/>
-                    <Route exact path={"/SignUp"} component={SignIn}/>
+                    <Route exact path={"/SignUp"} component={SignUp}/>
+                    <Route exact path={"/vacancies"} component={Vacancies}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>
                     <Route component={ErrorPage}/>
 

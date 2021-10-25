@@ -56,6 +56,11 @@ const Navbar = (props) => {
             .then((res) => {
                 console.log(res)
                 toast.success(res.data.message)
+                handleClose();
+                setTimeout(()=>{
+                    window.location.reload();
+                },1000)
+
             })
             .catch((err) => {
                 console.log(err)
@@ -69,12 +74,14 @@ const Navbar = (props) => {
                 <Box width={"100%"} style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
                     <Box style={{width: "450px", display: "flex", justifyContent: "space-between"}}>
                         <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Businesses</Link>
-                        <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Vacancies</Link>
+                        <Link style={{textDecoration: "none", color: "white"}} to={"/vacancies"}>Vacancies</Link>
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
-                                    <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Applicants</Link>
-                                    <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Notifications</Link>
+                                    {props.role !== "ROLE_CITIZEN" ?
+                                        <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Applicants</Link> : ""}
+                                    {props.role === "ROLE_CITIZEN" ?
+                                        <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Notifications</Link> : ""}
                                 </>
                                 : ""
 
@@ -86,7 +93,6 @@ const Navbar = (props) => {
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
-
                                     {props.role === "ROLE_CITIZEN" ?
                                         <Button style={{color: "#fff"}} onClick={handleOpen}>
                                             Create

@@ -1,48 +1,31 @@
 import React, {useState} from 'react';
-import {Box, Button, TextField, Typography} from "@mui/material";
 import axios from "axios";
-import {toast} from "react-toastify";
-import {TOKEN_NAME} from "./Tokens";
 import {API_PATH} from "../Tools/APIS";
+import {toast} from "react-toastify";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 
-const SignIn = (props) => {
+const SignUp = (props) => {
     let Login = props.location.pathname;
     const [login, setlogin] = useState("");
     const [password, setpassword] = useState("");
+    const [isDisabled, setIsDisabled] = useState(true)
+    const [isError, setIsError] = useState(true)
 
     const setDataUser = (e) => {
         if (e.target.id === "filled-search") {
             let a = e.target.value;
             setlogin(a)
         } else {
-            let a = e.target.value;
-            setpassword(a)
+            if (document.getElementById("confirm").value === document.getElementById("password").value && !isError) {
+                let a = e.target.value;
+                setpassword(a)
+                setIsDisabled(!isDisabled);
+            }else {
+                setIsDisabled(true)
+            }
         }
     }
-
-
-    // function loginUser(data, history) {
-    //      return function (dispatch) {
-    //          dispatch({
-    //              type: LOGIN
-    //          })
-    //          axios.post(API_PATH + "auth/login", data)
-    //              .then((res) => {
-    //                  console.log(res);
-    //                  localStorage.setItem(TOKEN_NAME, res.data.tokenType + " " + res.data.accessToken);
-    //                  dispatch({type: LOGIN})
-    //                  history.push("/admin")
-    //              })
-    //              .catch((error) => {
-    //                  console.log(error);
-    //                  toast.error(error.message)
-    //                  dispatch({type: LOGIN})
-    //
-    //              });
-    //      }
-    //
-    //  }
 
     const checkUser = () => {
 
@@ -50,16 +33,14 @@ const SignIn = (props) => {
             cardNumber: login,
             password: password
         }
-        // console.log(authDTO)
+        console.log(authDTO)
 
-        axios.post(`${API_PATH}/api/v1/auth/login`, authDTO)
+        axios.post(`${API_PATH}/api/v1/auth/register`, authDTO)
             .then((res) => {
-                // console.log(res)
-                // const token = jwtDecode(res.data.body);
-                // console.log(token)
-                localStorage.setItem(TOKEN_NAME, res.data.body)
+                console.log(res)
                 toast.success(res.data.message)
-                props.history.push("/admin")
+                props.history.push("/SignIn");
+                // props.history.push("/SignIn")
             })
             .catch((err) => {
                 // toast.error("Password or Login is incorrect Try again")
@@ -67,6 +48,11 @@ const SignIn = (props) => {
             })
     }
 
+
+    const handleOnChange = (e) => {
+        console.log(e.target.value.length)
+        return e.target.value.length === 8 ? setIsError(false) : setIsError(true);
+    }
 
     return (
         <Box style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -80,20 +66,34 @@ const SignIn = (props) => {
                     </Typography>
 
                     <TextField
+                        error={isError}
                         id="filled-search"
                         label="Card Number"
                         type="number"
                         variant="filled"
                         defaultValue={"11111115"}
+                        placeholder={"max 8 digits"}
+                        onChange={(e)=> {
+                            handleOnChange(e);
+                            setDataUser(e)
+                        }}
+                    />
+                    <TextField
+                        id="password"
+                        label="Password"
+                        type="text"
+                        // autoComplete="no"
+                        variant="filled"
+                        defaultValue={""}
                         onKeyUp={setDataUser}
                     />
                     <TextField
-                        id="filled-password-input"
-                        label="Password"
-                        type="password"
+                        id="confirm"
+                        label="Confirm Password"
+                        type="text"
                         // autoComplete="no"
                         variant="filled"
-                        defaultValue={"123"}
+                        defaultValue={""}
                         onKeyUp={setDataUser}
                     />
 
@@ -102,13 +102,14 @@ const SignIn = (props) => {
                         variant={"contained"}
                         fullWidth
                         style={{margin: "20px 0"}}
+                        disabled={isDisabled}
                         onClick={() => {
                             checkUser()
                         }}
                     >
-                        Login</Button>
+                        Sign Up</Button>
+                    <Link style={{textDecoration: "none", color: "black",textAlign:"center"}} to={"/SignIn"}>Have an account? <br/> <span style={{color:"blue"}}>Sign In here</span></Link>
 
-                    <Link style={{textDecoration: "none", color: "black",textAlign:"center"}} to={"/SignUp"}>Not Have an account? <br/> <span style={{color:"blue"}}>Sign Up here</span></Link>
 
 
                 </Box></form>
@@ -117,4 +118,4 @@ const SignIn = (props) => {
     );
 };
 
-export default SignIn;
+export default SignUp;
