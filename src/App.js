@@ -9,6 +9,7 @@ import Admin from "./Pages/Admin";
 import ErrorPage from "./Components/ErrorPage";
 import SignUp from "./Auth/SignUp";
 import Vacancies from "./Pages/Vacancies";
+import Applicants from "./Components/Applicants";
 
 function App() {
     return (
@@ -20,9 +21,8 @@ function App() {
                     <Route exact path={"/SignUp"} component={SignUp}/>
                     <Route exact path={"/vacancies"} component={Vacancies}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>
+                    <PrivateRoute exact path={"/applicants/:id"} component={Applicants}/>
                     <Route component={ErrorPage}/>
-
-
                 </Switch>
             </BrowserRouter>
             <ToastContainer/>

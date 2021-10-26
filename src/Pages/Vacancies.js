@@ -14,6 +14,7 @@ import axios from "axios";
 import {API_PATH} from "../Tools/APIS";
 import {TOKEN_NAME} from "../Auth/Tokens";
 import {ExpandMore} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 function ExpandMoreIcon() {
     return null;
@@ -297,11 +298,15 @@ const Vacancies = () => {
                                         role === "ROLE_CITIZEN" ?
                                             <Button onClick={() => sendResume(item)} color={"primary"}
                                                     variant={"outlined"}>Apply</Button> :
+                                            <div style={{display:"flex",justifyContent:"space-between"}}>
                                             <Button color={"primary"} onClick={() => {
                                                 editVacancy(item.id);
                                                 setIsEdit(true)
                                             }}
                                                     variant={"outlined"}>Edit</Button>
+                                                <Button color={'primary'} variant={"outlined"}><Link to={`/applicants/${item.id}`}>Show Applicants</Link></Button>
+                                            </div>
+
                                     }
 
 
