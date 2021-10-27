@@ -12,6 +12,9 @@ import Vacancies from "./Pages/Vacancies";
 import Applicants from "./Components/Applicants";
 
 function App() {
+
+    var fileDownload = require('js-file-download');
+
     return (
         <div>
             <BrowserRouter>

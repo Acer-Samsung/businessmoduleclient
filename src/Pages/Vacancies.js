@@ -15,6 +15,7 @@ import {API_PATH} from "../Tools/APIS";
 import {TOKEN_NAME} from "../Auth/Tokens";
 import {ExpandMore} from "@mui/icons-material";
 import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
 
 function ExpandMoreIcon() {
     return null;
@@ -154,7 +155,7 @@ const Vacancies = () => {
         const formData = new FormData();
         formData.append('file', file.file)
 
-        axios.post(`${API_PATH}/api/v1/vacancies/${item.id}/apply`, formData, {
+        axios.post(`${API_PATH}/api/v1/resume/apply/${item.id}`, formData, {
             headers: {
                 Authorization: AuthStr,
                 'Access-Control-Allow-Origin': '*',
@@ -162,10 +163,10 @@ const Vacancies = () => {
             }
         })
             .then((res) => {
-                console.log(res)
+                toast.success(res.data.message)
             })
             .catch((err) => {
-                console.log(err)
+                toast.error(err.message)
             })
     }
 
@@ -304,7 +305,7 @@ const Vacancies = () => {
                                                 setIsEdit(true)
                                             }}
                                                     variant={"outlined"}>Edit</Button>
-                                                <Button color={'primary'} variant={"outlined"}><Link to={`/applicants/${item.id}`}>Show Applicants</Link></Button>
+                                                <Button color={'primary'} variant={"outlined"}><Link to={`/applicants/${item.id}`} style={{textDecoration:"none",color:"#1976d2"}}>Show Applicants</Link></Button>
                                             </div>
 
                                     }
