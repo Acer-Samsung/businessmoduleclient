@@ -2,10 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {API_PATH} from "../Tools/APIS";
 import {TOKEN_NAME} from "../Auth/Tokens";
-import {Box, Button, FormControl, Modal, TextareaAutosize, TextField} from "@mui/material";
-import {toast} from "react-toastify";
-import {Link} from "react-router-dom";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import {Button} from "@mui/material";
 
 const Applicants = (props) => {
 
@@ -46,20 +43,20 @@ const Applicants = (props) => {
     //         })
     // }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '0.2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    };
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    // const style = {
+    //     position: 'absolute',
+    //     top: '50%',
+    //     left: '50%',
+    //     transform: 'translate(-50%, -50%)',
+    //     width: 400,
+    //     bgcolor: 'background.paper',
+    //     border: '0.2px solid #000',
+    //     boxShadow: 24,
+    //     p: 4,
+    // };
+    // const [open, setOpen] = useState(false);
+    // const handleOpen = () => setOpen(true);
+    // const handleClose = () => setOpen(false);
 
     // const DownloadFile = (resumeId) => { //BUNI HAM DOWNLOAD ga aloqasi
     //     let url = `${API_PATH}/api/v1/resume/${resumeId}`;
@@ -121,23 +118,23 @@ const Applicants = (props) => {
                 ))
             }
 
-            <Modal open={open} onClose={() => {
-                handleClose();
-            }} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                <Box sx={style}>
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "400px",
-                        height: "30px"
-                        // eslint-disable-next-line react/jsx-no-target-blank
-                    }}><Button variant={"contained"} color={"info"}>Yes</Button>
-                        <Button variant={"contained"} onClick={() => {
-                            handleClose()
-                        }} color={"success"}>No</Button>
-                    </div>
-                </Box>
-            </Modal>
+            {/*<Modal open={open} onClose={() => {*/}
+            {/*    handleClose();*/}
+            {/*}} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">*/}
+            {/*    <Box sx={style}>*/}
+            {/*        <div style={{*/}
+            {/*            display: "flex",*/}
+            {/*            justifyContent: "space-between",*/}
+            {/*            width: "400px",*/}
+            {/*            height: "30px"*/}
+            {/*            // eslint-disable-next-line react/jsx-no-target-blank*/}
+            {/*        }}><Button variant={"contained"} color={"info"}>Yes</Button>*/}
+            {/*            <Button variant={"contained"} onClick={() => {*/}
+            {/*                handleClose()*/}
+            {/*            }} color={"success"}>No</Button>*/}
+            {/*        </div>*/}
+            {/*    </Box>*/}
+            {/*</Modal>*/}
 
         </ul>
     );
