@@ -10,10 +10,11 @@ import ErrorPage from "./Components/ErrorPage";
 import SignUp from "./Auth/SignUp";
 import Vacancies from "./Pages/Vacancies";
 import Applicants from "./Components/Applicants";
+import Notifications from "./Pages/Notifications";
 
 function App() {
 
-    var fileDownload = require('js-file-download');
+    // var fileDownload = require('js-file-download');
 
     return (
         <div>
@@ -24,6 +25,7 @@ function App() {
                     <Route exact path={"/SignUp"} component={SignUp}/>
                     <Route exact path={"/vacancies"} component={Vacancies}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>
+                    <PrivateRoute exact path={"/notifications"} component={Notifications}/>
                     <PrivateRoute exact path={"/applicants/:id"} component={Applicants}/>
                     <Route component={ErrorPage}/>
                 </Switch>

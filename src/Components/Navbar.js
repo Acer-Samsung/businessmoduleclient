@@ -78,9 +78,8 @@ const Navbar = (props) => {
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
-                                    {props.role !== "ROLE_CITIZEN" ?
-                                        <Link style={{textDecoration: "none", color: "white"}} to={"#"}>Notification</Link> :
-                                        <Link style={{textDecoration: "none", color: "white"}} to={`#`}>Applicants</Link>
+                                    {props.role === "ROLE_CITIZEN" ?
+                                        <Link style={{textDecoration: "none", color: "white"}} to={"/notifications"}>Notification</Link> : ""
                                     }
                                 </>
                                 : ""

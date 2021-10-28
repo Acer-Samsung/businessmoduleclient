@@ -240,6 +240,7 @@ const Vacancies = () => {
                             width: "80%",
                             marginLeft: "10%",
                             border: "0.5px solid black",
+                            borderRadius:"10px",
                             position: "relative",
                             padding: "10px",
                             boxSizing: "border-box",

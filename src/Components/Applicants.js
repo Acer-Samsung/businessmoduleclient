@@ -3,6 +3,8 @@ import axios from "axios";
 import {API_PATH} from "../Tools/APIS";
 import {TOKEN_NAME} from "../Auth/Tokens";
 import {Button} from "@mui/material";
+import {toast} from "react-toastify";
+import Navbar from "./Navbar";
 
 const Applicants = (props) => {
 
@@ -18,7 +20,7 @@ const Applicants = (props) => {
             .then((res) => {
                 setResumes(res.data.body.applicantResume)
                 setInform(res.data.body)
-                console.log(res.data.body)
+                console.log(res.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -76,67 +78,96 @@ const Applicants = (props) => {
         link.click();
     }
 
+    const accepted = (resumeId, vacancyId) => {
+        axios.post(`${API_PATH}/api/v1/notifications/${vacancyId}/${resumeId}/status?accepted=true`, null, {headers: {Authorization: AuthStr}})
+            .then((res) => {
+                toast.success(res.data.message)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const declined = (resumeId, vacancyId) => {
+        axios.post(`${API_PATH}/api/v1/notifications/${vacancyId}/${resumeId}/status?accepted=false`, null, {headers: {Authorization: AuthStr}})
+            .then((res) => {
+                console.log(res)
+                // toast.success(res.data.message)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     return (
-        <ul>
-            {
-                resumes.map((item, index) => (
-                    <li style={{listDecoration: "none"}} key={index}>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            width: "80%",
-                            alignItems: "center"
-                        }}><h4>{item.owner.firstName} {item.owner.lastName} ({inform.jobTitle})</h4>
+        <div>
+            <Navbar/>
+
+
+            <ul style={{width: "90%", margin: "0 auto",marginTop:"50px"}}>
+                <h2>Applicants</h2>
+                {
+                    resumes.map((item, index) => (
+                        <li style={{
+                            listStyle: "none",
+                            border: "1px solid #000",
+                            padding: "5px",
+                            boxSizing: "border-box",
+                            margin: "5px 0",
+                            display:"flex",
+                            justifyContent:"center",
+                            borderRadius:"10px"
+                        }} key={index}>
                             <div style={{
                                 display: "flex",
                                 justifyContent: "space-between",
-                                width: "400px",
-                                height: "30px"
-                            }}><Button variant={"contained"}
-                                onClick={() => {
-                                    // downloadResume(item.id);
-                                    getPdf(item.id);
-                                    // handleOpen()
-                                }}
+                                width: "80%",
+                                alignItems: "center"
+                            }}><h4>{item.owner.firstName} {item.owner.lastName} ({inform.jobTitle})</h4>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    width: "400px",
+                                    height: "30px"
+                                }}><Button variant={"contained"}
+                                           onClick={() => {
+                                               getPdf(item.id);
+                                           }}
+                                           color={"info"}>
+                                    Download</Button>
 
-                                // onClick={() => {
-                                //     DownloadFile(item.id).then(
-                                //         (response) => {
-                                //             fileDownload(encodeURIComponent(response.data));
-                                //             console.log(response)
-                                //         }
-                                //         , (error) => {
-                                //             console.log(error)
-                                //         });
-                                // }}
+                                    <Button variant={"contained"} color={"success"} onClick={() => {
+                                        accepted(item.id, inform.id)
+                                    }}>Offer</Button>
+                                    <Button variant={"contained"} color={"warning"} onClick={() => {
+                                        declined(item.id, inform.id)
+                                    }}>Decline</Button>
+                                </div>
+                            </div>
+                        </li>
+                    ))
+                }
 
-                                       color={"info"}>
-                                Download</Button><Button variant={"contained"} color={"success"}>Offer</Button><Button
-                                variant={"contained"} color={"warning"}>Decline</Button></div>
-                        </div>
-                    </li>
-                ))
-            }
+                {/*<Modal open={open} onClose={() => {*/}
+                {/*    handleClose();*/}
+                {/*}} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">*/}
+                {/*    <Box sx={style}>*/}
+                {/*        <div style={{*/}
+                {/*            display: "flex",*/}
+                {/*            justifyContent: "space-between",*/}
+                {/*            width: "400px",*/}
+                {/*            height: "30px"*/}
+                {/*            // eslint-disable-next-line react/jsx-no-target-blank*/}
+                {/*        }}><Button variant={"contained"} color={"info"}>Yes</Button>*/}
+                {/*            <Button variant={"contained"} onClick={() => {*/}
+                {/*                handleClose()*/}
+                {/*            }} color={"success"}>No</Button>*/}
+                {/*        </div>*/}
+                {/*    </Box>*/}
+                {/*</Modal>*/}
 
-            {/*<Modal open={open} onClose={() => {*/}
-            {/*    handleClose();*/}
-            {/*}} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">*/}
-            {/*    <Box sx={style}>*/}
-            {/*        <div style={{*/}
-            {/*            display: "flex",*/}
-            {/*            justifyContent: "space-between",*/}
-            {/*            width: "400px",*/}
-            {/*            height: "30px"*/}
-            {/*            // eslint-disable-next-line react/jsx-no-target-blank*/}
-            {/*        }}><Button variant={"contained"} color={"info"}>Yes</Button>*/}
-            {/*            <Button variant={"contained"} onClick={() => {*/}
-            {/*                handleClose()*/}
-            {/*            }} color={"success"}>No</Button>*/}
-            {/*        </div>*/}
-            {/*    </Box>*/}
-            {/*</Modal>*/}
-
-        </ul>
+            </ul>
+        </div>
     );
 };
 
