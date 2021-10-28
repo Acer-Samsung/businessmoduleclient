@@ -6,7 +6,6 @@ import {Box, Button, FormControl, Modal, TextareaAutosize, TextField} from "@mui
 import {toast} from "react-toastify";
 import {Link} from "react-router-dom";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import fileDownload from "js-file-download";
 
 const Applicants = (props) => {
 
@@ -33,19 +32,19 @@ const Applicants = (props) => {
         getApplicants(pathname)
     }, [])
 
-    let [downloadLink, setDonwloadLink] = useState("");
+    // let [downloadLink, setDonwloadLink] = useState(""); //DOWNLOAD ga aloqasi bor
 
-    const downloadResume = (resumeId) => {
-        axios.get(`${API_PATH}/api/v1/resume/${resumeId}`, {headers: {Authorization: AuthStr}})
-            .then((res) => {
-                downloadLink = encodeURIComponent(res.data);
-                setDonwloadLink(downloadLink)
-                fileDownload(downloadLink,"resume.pdf","pdf")
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
+    // const downloadResume = (resumeId) => {
+    //     axios.get(`${API_PATH}/api/v1/resume/${resumeId}`, {headers: {Authorization: AuthStr}})
+    //         .then((res) => {
+    //             downloadLink = encodeURIComponent(res.data);
+    //             setDonwloadLink(downloadLink)
+    //             fileDownload(downloadLink,"resume.pdf","pdf")
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         })
+    // }
 
     const style = {
         position: 'absolute',
@@ -62,12 +61,23 @@ const Applicants = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const DownloadFile = (resumeId) => {
-        let url = `${API_PATH}/api/v1/resume/${resumeId}`;
-        return axios.get(url, {headers: {Authorization: AuthStr}}).then((response) => {
-            return response;
-        })
-    };
+    // const DownloadFile = (resumeId) => { //BUNI HAM DOWNLOAD ga aloqasi
+    //     let url = `${API_PATH}/api/v1/resume/${resumeId}`;
+    //     return axios.get(url, {headers: {Authorization: AuthStr}}).then((response) => {
+    //         return response;
+    //     })
+    // };
+
+    const getPdf = (resumeId) => {
+        // const url = BASE_URL + 'excel/productCountByWarehouse'
+        const url = `${API_PATH}/api/v1/resume/${resumeId}`;
+        const link = document.createElement('a');
+        link.href = url;
+        // console.log(new Date(), "DATE")
+        link.setAttribute('download', "some.pdf"); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+    }
 
     return (
         <ul>
@@ -86,19 +96,22 @@ const Applicants = (props) => {
                                 width: "400px",
                                 height: "30px"
                             }}><Button variant={"contained"}
-                                           onClick={() => {
-                                    downloadResume(item.id);
-                                    handleOpen()
+                                onClick={() => {
+                                    // downloadResume(item.id);
+                                    getPdf(item.id);
+                                    // handleOpen()
                                 }}
 
-                                       // onClick={() => {
-                                       //     DownloadFile(item.id).then(
-                                       //         (response) => {
-                                       //             fileDownload(encodeURIComponent(response.data));
-                                       //             console.log(response)
-                                       //             }
-                                       //         , (error) => {console.log(error)});
-                                       // }}
+                                // onClick={() => {
+                                //     DownloadFile(item.id).then(
+                                //         (response) => {
+                                //             fileDownload(encodeURIComponent(response.data));
+                                //             console.log(response)
+                                //         }
+                                //         , (error) => {
+                                //             console.log(error)
+                                //         });
+                                // }}
 
                                        color={"info"}>
                                 Download</Button><Button variant={"contained"} color={"success"}>Offer</Button><Button
