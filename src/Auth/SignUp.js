@@ -81,7 +81,7 @@ const SignUp = (props) => {
                     <TextField
                         id="password"
                         label="Password"
-                        type="text"
+                        type="password"
                         // autoComplete="no"
                         variant="filled"
                         defaultValue={""}
@@ -90,7 +90,7 @@ const SignUp = (props) => {
                     <TextField
                         id="confirm"
                         label="Confirm Password"
-                        type="text"
+                        type="password"
                         // autoComplete="no"
                         variant="filled"
                         defaultValue={""}

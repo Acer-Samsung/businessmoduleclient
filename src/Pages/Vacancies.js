@@ -14,14 +14,14 @@ import axios from "axios";
 import {API_PATH} from "../Tools/APIS";
 import {TOKEN_NAME} from "../Auth/Tokens";
 import {ExpandMore} from "@mui/icons-material";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {toast} from "react-toastify";
 
 function ExpandMoreIcon() {
     return null;
 }
 
-const Vacancies = () => {
+const Vacancies = (props) => {
 
     const AuthStr = 'Bearer '.concat(localStorage.getItem(TOKEN_NAME));
     let [role, setRole] = useState("");

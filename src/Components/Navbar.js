@@ -15,6 +15,7 @@ import {TOKEN_NAME} from "../Auth/Tokens";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {API_PATH} from "../Tools/APIS";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = (props) => {
 
@@ -52,14 +53,14 @@ const Navbar = (props) => {
     }
     const handleFormSubmit = () => {
         let data = `${API_PATH}/api/v1/businesses/new?name=${companyName}&homeId=${officeID}&type=${officeType}`;
-        axios.post(data,null,{headers: {Authorization: AuthStr}})
+        axios.post(data, null, {headers: {Authorization: AuthStr}})
             .then((res) => {
                 console.log(res)
                 toast.success(res.data.message)
                 handleClose();
-                setTimeout(()=>{
+                setTimeout(() => {
                     window.location.reload();
-                },1000)
+                }, 1000)
 
             })
             .catch((err) => {
@@ -69,38 +70,50 @@ const Navbar = (props) => {
 
 
     return (
-        <AppBar style={{zIndex:"200"}} position={"static"}>
+        <AppBar style={{zIndex: "200"}} position={"static"}>
             <Toolbar>
                 <Box width={"100%"} style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
-                    <Box style={{width: "450px", display: "flex", justifyContent: "space-between"}}>
+                    <Box style={{width: "450px", display: "flex", justifyContent: "space-between",alignItems:"center"}}>
                         <Link style={{textDecoration: "none", color: "white"}} to={"/businesses"}>Businesses</Link>
-                        <Link style={{textDecoration: "none", color: "white"}} to={"/vacancies"}>Vacancies</Link>
+                        {
+                            localStorage.getItem(TOKEN_NAME) ? <Link style={{textDecoration: "none", color: "white"}}
+                                                                     to={"/vacancies"}>Vacancies</Link> : ""
+                        }
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
                                     {props.role === "ROLE_CITIZEN" ?
-                                        <Link style={{textDecoration: "none", color: "white"}} to={"/notifications"}>Notification</Link> : ""
+                                        <Link style={{textDecoration: "none", color: "white"}}
+                                              to={"/notifications"}>Notification</Link> : ""
                                     }
                                 </>
                                 : ""
 
                         }
                     </Box>
-                    <Box style={{width: "250px", display: "flex", justifyContent: "space-between"}}>
+                    <Box style={{width: "350px", display: "flex", justifyContent: "space-between",alignItems:"center"}}>
 
 
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
-                                    {props.role === "ROLE_CITIZEN" ?
-                                        <Button style={{color: "#fff"}} onClick={handleOpen}>
+                                    <Link style={{textDecoration: "none", color: "white"}}
+                                          to={"/admin"}><AccountCircleIcon/></Link>
+
+                                    <Button color={"success"} variant={"contained"} style={{width:"169px"}} onClick={handleOpen}>
+                                        <b style={{color:"#fff",fontWeight:"normal"}}>
                                             Create
                                             Business
-                                        </Button> : ""}
+                                        </b>
+                                    </Button>
 
-                                    <Link style={{textDecoration: "none", color: "white"}} onClick={() => {
-                                        localStorage.removeItem(TOKEN_NAME)
-                                    }} to={"/"}>Log Out</Link>
+
+                                    <Button color={"error"} style={{width:"100px"}} variant={"contained"}> <Link
+                                        style={{textDecoration: "none", color: "white"}}
+                                        onClick={() => {
+                                            localStorage.removeItem(TOKEN_NAME)
+                                        }} to={"/"}>Log Out</Link></Button>
+
                                 </>
                                 : <>
                                     <Link style={{textDecoration: "none", color: "white"}} to={"/SignIn"}>Sign In</Link>
@@ -117,7 +130,8 @@ const Navbar = (props) => {
                 <Box sx={style}>
 
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Comp Type</InputLabel>
+                        <InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}
+                                    id="demo-simple-select-label">Company Type</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="OfficeType"

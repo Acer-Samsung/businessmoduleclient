@@ -1,5 +1,5 @@
 import HomePage from "./Pages/HomePage";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import SignIn from "./Auth/SignIn";
 import {ToastContainer} from "react-toastify";
 import React from "react";
@@ -12,10 +12,9 @@ import Vacancies from "./Pages/Vacancies";
 import Applicants from "./Components/Applicants";
 import Notifications from "./Pages/Notifications";
 import Businesses from "./Pages/Businesses";
+import MyBusinesses from "./Pages/MyBusinesses";
 
 function App() {
-
-    // var fileDownload = require('js-file-download');
 
     return (
         <div>
@@ -24,8 +23,9 @@ function App() {
                     <Route exact path={"/"} component={HomePage}/>
                     <Route exact path={"/SignIn"} component={SignIn}/>
                     <Route exact path={"/SignUp"} component={SignUp}/>
-                    <Route exact path={"/vacancies"} component={Vacancies}/>
                     <Route exact path={"/businesses"} component={Businesses}/>
+                    <PrivateRoute exact path={"/vacancies"} component={Vacancies}/>
+                    <PrivateRoute exact path={"/mybusinesses"} component={MyBusinesses}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>
                     <PrivateRoute exact path={"/notifications"} component={Notifications}/>
                     <PrivateRoute exact path={"/applicants/:id"} component={Applicants}/>
