@@ -69,11 +69,11 @@ const Navbar = (props) => {
 
 
     return (
-        <AppBar style={{maxWidth:"1536px"}} position={"static"}>
+        <AppBar style={{zIndex:"200"}} position={"static"}>
             <Toolbar>
                 <Box width={"100%"} style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
                     <Box style={{width: "450px", display: "flex", justifyContent: "space-between"}}>
-                        <Link style={{textDecoration: "none", color: "white"}} to={"/"}>Businesses</Link>
+                        <Link style={{textDecoration: "none", color: "white"}} to={"/businesses"}>Businesses</Link>
                         <Link style={{textDecoration: "none", color: "white"}} to={"/vacancies"}>Vacancies</Link>
                         {
                             localStorage.getItem(TOKEN_NAME) ?

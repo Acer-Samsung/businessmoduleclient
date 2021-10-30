@@ -123,7 +123,7 @@ const Applicants = (props) => {
                                 justifyContent: "space-between",
                                 width: "80%",
                                 alignItems: "center"
-                            }}><h4>{item.owner.firstName} {item.owner.lastName} ({inform.jobTitle})</h4>
+                            }}><h4>{item.owner.firstName} {item.owner.lastName} <br/> Vacancy: {inform.jobTitle}</h4>
                                 <div style={{
                                     display: "flex",
                                     justifyContent: "space-between",

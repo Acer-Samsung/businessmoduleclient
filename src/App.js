@@ -11,6 +11,7 @@ import SignUp from "./Auth/SignUp";
 import Vacancies from "./Pages/Vacancies";
 import Applicants from "./Components/Applicants";
 import Notifications from "./Pages/Notifications";
+import Businesses from "./Pages/Businesses";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                     <Route exact path={"/SignIn"} component={SignIn}/>
                     <Route exact path={"/SignUp"} component={SignUp}/>
                     <Route exact path={"/vacancies"} component={Vacancies}/>
+                    <Route exact path={"/businesses"} component={Businesses}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>
                     <PrivateRoute exact path={"/notifications"} component={Notifications}/>
                     <PrivateRoute exact path={"/applicants/:id"} component={Applicants}/>

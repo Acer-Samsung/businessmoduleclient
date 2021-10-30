@@ -67,6 +67,7 @@ const SignIn = (props) => {
             })
     }
 
+    const [disabled,setDisabled] = useState(false);
 
     return (
         <Box style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -103,15 +104,18 @@ const SignIn = (props) => {
                         fullWidth
                         style={{margin: "20px 0"}}
                         onClick={() => {
-                            checkUser()
+                            checkUser();
+                            setDisabled(true)
                         }}
+                        disabled={disabled}
                     >
                         Login</Button>
 
                     <Link style={{textDecoration: "none", color: "black",textAlign:"center"}} to={"/SignUp"}>Not Have an account? <br/> <span style={{color:"blue"}}>Sign Up here</span></Link>
 
 
-                </Box></form>
+                </Box>
+            </form>
         </Box>
 
     );

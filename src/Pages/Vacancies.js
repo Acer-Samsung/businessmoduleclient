@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
     Box,
-    Button, CardContent, Collapse,
+    Button, CardContent, CircularProgress, Collapse,
     Container,
     FormControl,
     Modal,
@@ -27,6 +27,7 @@ const Vacancies = () => {
     let [role, setRole] = useState("");
     const [vacancies, setVacancies] = useState([]);
     const [itemID,setItemID]= useState('');
+    const [loading,setloading] = useState(true)
 
     useEffect(() => {
 
@@ -59,6 +60,9 @@ const Vacancies = () => {
             })
             .catch((err) => {
                 console.log(err)
+            })
+            .finally(()=>{
+                setloading(false)
             })
 
 
@@ -179,144 +183,146 @@ const Vacancies = () => {
     return (
         <div>
             <Navbar/>
-            <Container style={{marginTop: "30px"}}>
-                <Box style={{display: "flex", justifyContent: "center"}}>
-                    <Button onClick={handleOpen} style={{display: `${role === "ROLE_CITIZEN" ? "none" : "block"}`}}
-                            variant={"outlined"}>Add Vacancy</Button>
-                </Box>
-                <Modal open={open} onClose={() => {
-                    handleClose();
-                    setIsEdit(false)
-                }} aria-labelledby="modal-modal-title"
-                       aria-describedby="modal-modal-description">
-                    <Box sx={style}>
+            {
+                loading ? <div style={{display:"flex",justifyContent:"center",alignItems:"center",alignContent:"center",height:"70vh"}}><CircularProgress size={75} /></div> : <Container style={{marginTop: "30px"}}>
+                    <Box style={{display: "flex", justifyContent: "center"}}>
+                        <Button onClick={handleOpen} style={{display: `${role === "ROLE_CITIZEN" ? "none" : "block"}`}}
+                                variant={"outlined"}>Add Vacancy</Button>
+                    </Box>
+                    <Modal open={open} onClose={() => {
+                        handleClose();
+                        setIsEdit(false)
+                    }} aria-labelledby="modal-modal-title"
+                           aria-describedby="modal-modal-description">
+                        <Box sx={style}>
 
-                        <FormControl fullWidth>
-                            <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-                                <TextField
-                                    id="JobTitle"
-                                    label="Job Title"
-                                    type="text"
-                                    variant="outlined"
-                                    onChange={setDataFunc}
-                                />
-
-                                <TextareaAutosize
-                                    style={{margin: "25px 0 20px 0"}}
-                                    id="JobDescription"
-                                    minRows={10}
-                                    placeholder="Job Description"
-                                    onChange={setDataFunc}
-                                />
-
-                                <div style={{
-                                    display: "flex",
-                                    width: "100%",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    margin: "0 0 20px 0"
-                                }}>
-                                    <AttachMoneyIcon color={"action"}/>
+                            <FormControl fullWidth>
+                                <Box width={"100%"} display={"flex"} flexDirection={"column"}>
                                     <TextField
-                                        fullWidth
-                                        id="salary"
-                                        label="Salary"
-                                        type="number"
+                                        id="JobTitle"
+                                        label="Job Title"
+                                        type="text"
                                         variant="outlined"
                                         onChange={setDataFunc}
                                     />
-                                </div>
 
-                            </Box>
-                            <Button onClick={sendData} type={"submit"} variant={"outlined"}>Submit</Button>
-                        </FormControl>
+                                    <TextareaAutosize
+                                        style={{margin: "25px 0 20px 0"}}
+                                        id="JobDescription"
+                                        minRows={10}
+                                        placeholder="Job Description"
+                                        onChange={setDataFunc}
+                                    />
 
-
-                    </Box>
-                </Modal>
-                {
-                    vacancies.map((item, i) => (
-                        <div style={{
-                            width: "80%",
-                            marginLeft: "10%",
-                            border: "0.5px solid black",
-                            borderRadius:"10px",
-                            position: "relative",
-                            padding: "10px",
-                            boxSizing: "border-box",
-                            marginTop: "10px",
-                            marginBottom: "10px",
-                        }}>
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                width: "100%",
-                                alignContent: "center",
-                                alignItems: "center"
-                            }}>
-                                <div style={{display: 'flex'}}>
-                                    <Typography color={"black"}>{item.jobTitle}</Typography>
-                                    <Typography style={{marginLeft: "10px"}}
-                                                color={"black"}>({item.business.name})</Typography>
-                                </div>
-
-                                <ExpandMore
-                                    onClick={() => handleExpandClick(i)}
-                                    aria-expanded={expandedId === i}
-                                    aria-label="show more"
-                                ><ExpandMoreIcon/>
-                                </ExpandMore>
-                            </div>
-
-                            <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <p>{item.description}</p>
                                     <div style={{
                                         display: "flex",
+                                        width: "100%",
                                         justifyContent: "space-between",
-                                        alignItems: "center"
+                                        alignItems: "center",
+                                        margin: "0 0 20px 0"
                                     }}>
-                                        <div>
-                                            <h4>${item.salary}</h4>
-                                            <h4>Address: {item.business.address}</h4>
+                                        <AttachMoneyIcon color={"action"}/>
+                                        <TextField
+                                            fullWidth
+                                            id="salary"
+                                            label="Salary"
+                                            type="number"
+                                            variant="outlined"
+                                            onChange={setDataFunc}
+                                        />
+                                    </div>
+
+                                </Box>
+                                <Button onClick={sendData} type={"submit"} variant={"outlined"}>Submit</Button>
+                            </FormControl>
+
+
+                        </Box>
+                    </Modal>
+                    {
+                        vacancies.map((item, i) => (
+                            <div style={{
+                                width: "80%",
+                                marginLeft: "10%",
+                                border: "0.5px solid black",
+                                borderRadius:"10px",
+                                position: "relative",
+                                padding: "10px",
+                                boxSizing: "border-box",
+                                marginTop: "10px",
+                                marginBottom: "10px",
+                            }}>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    width: "100%",
+                                    alignContent: "center",
+                                    alignItems: "center"
+                                }}>
+                                    <div style={{display: 'flex'}}>
+                                        <Typography color={"black"}>{item.jobTitle}</Typography>
+                                        <Typography style={{marginLeft: "10px"}}
+                                                    color={"black"}>({item.business.name})</Typography>
+                                    </div>
+
+                                    <ExpandMore
+                                        onClick={() => handleExpandClick(i)}
+                                        aria-expanded={expandedId === i}
+                                        aria-label="show more"
+                                    ><ExpandMoreIcon/>
+                                    </ExpandMore>
+                                </div>
+
+                                <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
+                                    <CardContent>
+                                        <p>{item.description}</p>
+                                        <div style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center"
+                                        }}>
+                                            <div>
+                                                <h4>${item.salary}</h4>
+                                                <h4>Address: {item.business.address}</h4>
+                                            </div>
+
+                                            {
+                                                role === "ROLE_CITIZEN" ?
+                                                    <form id="fileupload" method="post" encType="multipart/form-data">
+                                                        <input id="file" onChange={handleFile} accept="application/pdf"
+                                                               style={{
+                                                                   border: "0.2px solid blue",
+                                                                   borderRadius: "20px",
+                                                                   padding: "10px",
+                                                                   boxSizing: "border-box"
+                                                               }} type={"file"}/>
+                                                    </form> : ""
+                                            }
+
                                         </div>
 
                                         {
                                             role === "ROLE_CITIZEN" ?
-                                                <form id="fileupload" method="post" encType="multipart/form-data">
-                                                    <input id="file" onChange={handleFile} accept="application/pdf"
-                                                           style={{
-                                                               border: "0.2px solid blue",
-                                                               borderRadius: "20px",
-                                                               padding: "10px",
-                                                               boxSizing: "border-box"
-                                                           }} type={"file"}/>
-                                                </form> : ""
+                                                <Button onClick={() => sendResume(item)} color={"primary"}
+                                                        variant={"outlined"}>Apply</Button> :
+                                                <div style={{display:"flex",justifyContent:"space-between"}}>
+                                                    <Button color={"primary"} onClick={() => {
+                                                        editVacancy(item.id);
+                                                        setIsEdit(true)
+                                                    }}
+                                                            variant={"outlined"}>Edit</Button>
+                                                    <Button color={'primary'} variant={"outlined"}><Link to={`/applicants/${item.id}`} style={{textDecoration:"none",color:"#1976d2"}}>Show Applicants</Link></Button>
+                                                </div>
+
                                         }
 
-                                    </div>
 
-                                    {
-                                        role === "ROLE_CITIZEN" ?
-                                            <Button onClick={() => sendResume(item)} color={"primary"}
-                                                    variant={"outlined"}>Apply</Button> :
-                                            <div style={{display:"flex",justifyContent:"space-between"}}>
-                                            <Button color={"primary"} onClick={() => {
-                                                editVacancy(item.id);
-                                                setIsEdit(true)
-                                            }}
-                                                    variant={"outlined"}>Edit</Button>
-                                                <Button color={'primary'} variant={"outlined"}><Link to={`/applicants/${item.id}`} style={{textDecoration:"none",color:"#1976d2"}}>Show Applicants</Link></Button>
-                                            </div>
-
-                                    }
-
-
-                                </CardContent>
-                            </Collapse></div>
-                    ))
-                }
-            </Container>
+                                    </CardContent>
+                                </Collapse></div>
+                        ))
+                    }
+                </Container>
+            }
         </div>
 
     );
