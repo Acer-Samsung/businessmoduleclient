@@ -3,7 +3,7 @@ import {
     AppBar,
     Box,
     Button,
-    FormControl,
+    FormControl, FormGroup,
     InputLabel, MenuItem,
     Modal,
     Select,
@@ -68,12 +68,96 @@ const Navbar = (props) => {
             })
     }
 
+    const [districts, setDistricts] = useState([{id: "", name: ""}]);
+    const [selectedDistricts, setSelectedDistricts] = useState([{id: "", name: ""}]);
+    const [streets, setStreets] = useState([{id: "", name: ""}]);
+    const [selectedStreet, setSelectedStreet] = useState([{id: "", name: ""}]);
+    const [buildings, setBuildings] = useState([{id: "", name: ""}]);
+    const [selectedBuilding, setSelectedBuilding] = useState([{id: "", name: ""}]);
+    const [offices, setOffices] = useState([{id: "", name: ""}]);
+    const [selectedOffice, setSelectedOffice] = useState([{id: "", name: ""}]);
+
+
+    const getDistrict = () => {
+
+        axios.get(`${API_PATH}/api/v1/businesses/cm/districts`)
+            .then((res) => {
+                console.log(res)
+                setDistricts(res.data.body)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+
+            })
+
+    }
+
+    const mapDistricts = (e) => {
+        setSelectedDistricts(e.target.value);
+        let districtId = e.target.value;
+        console.log(districtId)
+        axios.get(`${API_PATH}/api/v1/businesses/cm/street/${districtId}`)
+            .then((res) => {
+                console.log(res)
+                setStreets(res.data.body)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+
+            })
+    }
+    const mapStreets = (e) => {
+        setSelectedStreet(e.target.value);
+        let streetId = e.target.value;
+        console.log(streetId)
+        axios.get(`${API_PATH}/api/v1/businesses/cm/buildings/${streetId}`)
+            .then((res) => {
+                console.log(res)
+                setBuildings(res.data.body)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+
+            })
+    }
+
+    const mapBuildings = (e) => {
+        setSelectedBuilding(e.target.value)
+
+        let buildingId = e.target.value;
+        console.log(buildingId)
+        axios.get(`${API_PATH}/api/v1/businesses/cm/offices/${buildingId}`)
+            .then((res) => {
+                console.log(res)
+                setOffices(res.data.body)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+
+            })
+
+
+    }
+
 
     return (
-        <AppBar style={{zIndex: "200"}} position={"static"}>
+        <AppBar style={{zIndex: "200", margin: "0 0 0 0"}} position={"static"}>
             <Toolbar>
                 <Box width={"100%"} style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
-                    <Box style={{width: "450px", display: "flex", justifyContent: "space-between",alignItems:"center"}}>
+                    <Box style={{
+                        width: "450px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}>
                         <Link style={{textDecoration: "none", color: "white"}} to={"/businesses"}>Businesses</Link>
                         {
                             localStorage.getItem(TOKEN_NAME) ? <Link style={{textDecoration: "none", color: "white"}}
@@ -91,7 +175,12 @@ const Navbar = (props) => {
 
                         }
                     </Box>
-                    <Box style={{width: "350px", display: "flex", justifyContent: "space-between",alignItems:"center"}}>
+                    <Box style={{
+                        width: "350px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}>
 
 
                         {
@@ -100,15 +189,19 @@ const Navbar = (props) => {
                                     <Link style={{textDecoration: "none", color: "white"}}
                                           to={"/admin"}><AccountCircleIcon/></Link>
 
-                                    <Button color={"success"} variant={"contained"} style={{width:"169px"}} onClick={handleOpen}>
-                                        <b style={{color:"#fff",fontWeight:"normal"}}>
+                                    <Button color={"success"} variant={"contained"} style={{width: "169px"}}
+                                            onClick={() => {
+                                                handleOpen();
+                                                getDistrict()
+                                            }}>
+                                        <b style={{color: "#fff", fontWeight: "normal"}}>
                                             Create
                                             Business
                                         </b>
                                     </Button>
 
 
-                                    <Button color={"error"} style={{width:"100px"}} variant={"contained"}> <Link
+                                    <Button color={"error"} style={{width: "100px"}} variant={"contained"}> <Link
                                         style={{textDecoration: "none", color: "white"}}
                                         onClick={() => {
                                             localStorage.removeItem(TOKEN_NAME)
@@ -129,7 +222,7 @@ const Navbar = (props) => {
                    aria-describedby="modal-modal-description">
                 <Box sx={style}>
 
-                    <FormControl fullWidth>
+                    <FormGroup>
                         <InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}
                                     id="demo-simple-select-label">Company Type</InputLabel>
                         <Select
@@ -151,16 +244,85 @@ const Navbar = (props) => {
                                 variant="filled"
                                 onKeyUp={setDataUser}
                             />
-                            <TextField
+
+                            {/*<InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}*/}
+                            {/*            id="district">Company Type</InputLabel>*/}
+                            <Select
+                                labelId="district"
+                                id="districtname"
+                                value={selectedDistricts}
+                                label="District Name"
+                                onChange={(e) => {
+                                    mapDistricts(e)
+                                }}
+                            >
+                                {
+                                    districts.map((item) => (
+                                        <MenuItem value={item.id}>{item.name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+
+                            <Select
+                                labelId="street"
+                                id="streetname"
+                                value={selectedStreet}
+                                label="Street Name"
+                                onChange={(e) => {
+                                    mapStreets(e)
+                                }}
+                            >
+                                {
+                                    streets.map((item) => (
+                                        <MenuItem value={item.id}>{item.name}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+
+                            <Select
+                                labelId="building"
+                                id="buildingname"
+                                value={selectedBuilding}
+                                label="Building"
+                                onChange={(e)=>{
+                                    mapBuildings(e)
+                                }}
+                            >
+                                {
+                                    buildings.map((item) => (
+                                        <MenuItem value={item.id}>{item.id}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+
+                            <Select
+                                labelId="office"
                                 id="OfficeID"
+                                value={selectedOffice}
                                 label="Office ID"
-                                type="number"
-                                variant="filled"
-                                onKeyUp={setDataUser}
-                            />
+                                onChange={(e)=>{
+                                    setSelectedOffice(e.target.value);
+                                    setDataUser(e)
+                                }}
+                            >
+                                {
+                                    offices.map((item) => (
+                                        <MenuItem value={item.id}>{item.id}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+
+
+                            {/*<TextField*/}
+                            {/*    id="OfficeID"*/}
+                            {/*    label="Office ID"*/}
+                            {/*    type="number"*/}
+                            {/*    variant="filled"*/}
+                            {/*    onKeyUp={setDataUser}*/}
+                            {/*/>*/}
                         </Box>
                         <Button onClick={handleFormSubmit} type={"submit"} variant={"outlined"}>Submit</Button>
-                    </FormControl>
+                    </FormGroup>
 
 
                 </Box>
