@@ -83,14 +83,6 @@ const Businesses = () => {
                                 <Typography
                                     color={"black"}><span style={{fontWeight: "550"}}>Address: </span>{item.address}
                                 </Typography>
-                                <Typography
-                                    color={"black"}>{item.description ? (
-                                    <span style={{fontWeight: "550"}}>Description:</span>`${item.description}`) : ""}
-                                </Typography>
-                                <Typography
-                                    color={"black"}>{item.motto ?
-                                    <span style={{fontWeight: "550"}}>Motto:</span>`${item.motto}` : ""}
-                                </Typography>
                             </div>
 
 

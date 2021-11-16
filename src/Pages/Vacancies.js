@@ -258,7 +258,7 @@ const Vacancies = (props) => {
                                     <div style={{display: 'flex'}}>
                                         <Typography color={"black"}>{item.jobTitle}</Typography>
                                         <Typography style={{marginLeft: "10px"}}
-                                                    color={"black"}>({item.business.name})</Typography>
+                                                    color={"black"}><Link to={"/aboutbusiness/"+item.business.id}>({item.business.name})</Link></Typography>
                                     </div>
 
                                     <ExpandMore

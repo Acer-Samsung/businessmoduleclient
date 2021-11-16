@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     AppBar,
     Box,
@@ -18,6 +18,25 @@ import {API_PATH} from "../Tools/APIS";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = (props) => {
+
+    // let [role,setRole] = useState('');
+    //
+    // useEffect(()=>{
+    //     axios.get(`${API_PATH}/api/v1/users`, {headers: {Authorization: AuthStr}})
+    //         .then((res) => {
+    //             console.log(res)
+    //             // eslint-disable-next-line react-hooks/exhaustive-deps
+    //             role = res.data.body.role;
+    //             setRole(role);
+    //             console.log(role)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         })
+    //         .finally(() => {
+    //
+    //         })
+    // })
 
 
     const style = {
@@ -166,10 +185,11 @@ const Navbar = (props) => {
                         {
                             localStorage.getItem(TOKEN_NAME) ?
                                 <>
-                                    {props.role === "ROLE_CITIZEN" ?
+                                    {/*{role === "ROLE_CITIZEN" ?*/}
                                         <Link style={{textDecoration: "none", color: "white"}}
-                                              to={"/notifications"}>Notification</Link> : ""
-                                    }
+                                              to={"/notifications"}>Notification</Link>
+                                    {/*: ""*/}
+                                    {/*}*/}
                                 </>
                                 : ""
 
@@ -218,6 +238,8 @@ const Navbar = (props) => {
 
 
             </Toolbar>
+
+
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"
                    aria-describedby="modal-modal-description">
                 <Box sx={style}>

@@ -7,7 +7,7 @@ import {
     Button,
     CardContent,
     Collapse,
-    FormControl, InputLabel, MenuItem,
+    FormControl, FormGroup, InputLabel, MenuItem,
     Modal, Select,
     TextareaAutosize,
     TextField,
@@ -44,25 +44,18 @@ const MyBusinesses = () => {
         p: 4,
     };
     const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleOpenEdit = () => setOpenEdit(true);
+    const handleCloseEdit = () => setOpenEdit(false);
     const [itemID, setItemID] = useState('');
     const [officeType, setOfficeType] = useState('');
     const handleChange = (event) => {
         setOfficeType(event.target.value);
     };
-    let [officeID, setOfficeID] = useState(0);
-    const [companyName, setCompanyName] = useState("");
-
-    const setDataUser = (e) => {
-        if (e.target.id === "Description") {
-            let a = e.target.value;
-            setCompanyName(a);
-        } else {
-            let a = e.target.value;
-            setOfficeID(a);
-        }
-    }
+    let [busdescription, setBusDesc] = useState("");
+    const [motto, setMotto] = useState("");
 
     let [jobTitle, setJobTitle] = useState("");
     let [description, setDescription] = useState("");
@@ -93,7 +86,7 @@ const MyBusinesses = () => {
 
         if (isEdit) {
             console.log("is edit true");
-            axios.put(`${API_PATH}/api/v1/vacancies/myVacancies/${itemID}`, data, {headers: {Authorization: AuthStr}})
+            axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
                 .then((res) => {
                     console.log(res)
                     handleClose()
@@ -118,18 +111,9 @@ const MyBusinesses = () => {
                 })
         }
     }
-    const [file, setFile] = useState({});
-
-    const handleFile = e => {
-        setFile({file: e.target.files[0]});
-    };
 
     const [isEdit, setIsEdit] = useState(false);
 
-    const editVacancy = (itemid) => {
-        setItemID(itemid);
-        handleOpen()
-    }
 
     const getBusiness = () => {
         axios.get(`${API_PATH}/api/v1/businesses/my`, {headers: {Authorization: AuthStr}})
@@ -149,18 +133,36 @@ const MyBusinesses = () => {
         getBusiness();
     }, [])
 
+    const setDataUserEdit = (e) => {
+        if (e.target.id === "Motto") {
+            let a = e.target.value.toString().trim();
+            if (a.length < 250) {
+                setMotto(a);
+            } else {
+                toast.error("Word Limit 250")
+            }
+        } else {
+            let a = e.target.value.toString().trim();
+            if (a.length < 1000){
+                setBusDesc(a);
+            }else {
+                toast.error("Word Limit 1000")
+            }
+        }
+    }
+
     const editBusiness = () => {
 
         let data = {
             form: officeType,
-            description: companyName,
-            motto: officeID
+            description: busdescription,
+            motto: motto
         }
 
         axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
             .then((res) => {
                 console.log(res)
-                handleClose()
+                handleCloseEdit()
                 getBusiness()
             })
             .catch((err) => {
@@ -169,54 +171,66 @@ const MyBusinesses = () => {
             .finally(() => {
 
             })
-
     }
 
     return (
         <div>
             <Navbar/>
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title"
-                   aria-describedby="modal-modal-description">
-                <Box sx={style}>
 
-                    <FormControl fullWidth>
-                        <InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}
-                                    id="demo-simple-select-label">Company Type</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="OfficeType"
-                            value={officeType}
-                            label="Office Type"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value={"SP"}>Sole Proprietorship</MenuItem>
-                            <MenuItem value={"CORP"}>Corporation</MenuItem>
-                            <MenuItem value={"LLC"}>Limited Liability Company</MenuItem>
-                        </Select>
-                        <Box width={"100%"} display={"flex"} flexDirection={"column"}>
-                            <TextField
-                                id="Description"
-                                label="Description"
-                                type="text"
-                                variant="filled"
-                                onKeyUp={setDataUser}
-                            />
-                            <TextField
-                                id="Motto"
-                                label="Motto"
-                                type="text"
-                                variant="filled"
-                                onKeyUp={setDataUser}
-                            />
-                        </Box>
-                        <Button type={"submit"} onClick={() => {
-                            editBusiness()
-                        }} variant={"outlined"}>Edit</Button>
-                    </FormControl>
+            <Typography variant={"h2"} marginLeft={20}>My Businesses</Typography>
 
+            {
+                isEdit ? <Modal open={openEdit} onClose={handleCloseEdit} aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description">
+                    <Box sx={style}>
 
-                </Box>
-            </Modal>
+                        <FormGroup>
+                            <InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}
+                                        id="demo-simple-select-label">Company Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="OfficeType"
+                                value={officeType}
+                                label="Office Type"
+                                onChange={handleChange}
+                                required={"true"}
+                            >
+                                <MenuItem value={"SP"}>Sole Proprietorship</MenuItem>
+                                <MenuItem value={"CORP"}>Corporation</MenuItem>
+                                <MenuItem value={"LLC"}>Limited Liability Company</MenuItem>
+                            </Select>
+                            <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+                                <TextField
+                                    style={{margin: "5px 0 20px 0"}}
+                                    id="Motto"
+                                    label="Motto"
+                                    type="text"
+                                    variant="filled"
+                                    onKeyUp={setDataUserEdit}
+                                    required={true}
+                                />
+
+                                <TextareaAutosize
+                                    style={{margin: "5px 0 20px 0"}}
+                                    id="Description"
+                                    minRows={10}
+                                    placeholder="Description"
+                                    onChange={setDataUserEdit}
+                                />
+
+                                {/*<TextField*/}
+                                {/*    id="OfficeID"*/}
+                                {/*    label="Office ID"*/}
+                                {/*    type="number"*/}
+                                {/*    variant="filled"*/}
+                                {/*    onKeyUp={setDataUser}*/}
+                                {/*/>*/}
+                            </Box>
+                            <Button onClick={editBusiness} type={"submit"} variant={"outlined"}>Submit</Button>
+                        </FormGroup>
+                    </Box>
+                </Modal> : ""
+            }
 
             {businesses.map((item, i) => (
                 <div style={{
@@ -259,25 +273,27 @@ const MyBusinesses = () => {
                                 flexDirection: "column",
                             }}>
                                 <Typography
+                                color={"black"}>{item.description ? <><span
+                                style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
+                            </Typography>
+                                <Typography
+                                    color={"black"}>{item.motto ?
+                                    <><span style={{fontWeight: "550"}}>Motto:</span> {item.motto}</> : ""}
+                                </Typography>
+                                <Typography
                                     color={"black"}><span
                                     style={{fontWeight: "550"}}>Created at:</span> {item.createdAt}
                                 </Typography>
                                 <Typography
                                     color={"black"}><span style={{fontWeight: "550"}}>Address: </span>{item.address}
                                 </Typography>
-                                <Typography
-                                    color={"black"}>{item.description ? <><span
-                                    style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
-                                </Typography>
-                                <Typography
-                                    color={"black"}>{item.motto ?
-                                    <><span style={{fontWeight: "550"}}>Motto:</span> {item.motto}</> : ""}
-                                </Typography>
+
                             </div>
 
                             <Box style={{display: "flex", alignItems: "center"}}>
                                 <Button variant={"contained"} style={{margin: "10px 0 -10px 0"}} onClick={() => {
-                                    handleOpen();
+                                    handleOpenEdit();
+                                    setIsEdit(true)
                                     setItemID(item.id)
                                 }}>Edit</Button>
 
@@ -334,7 +350,8 @@ const MyBusinesses = () => {
                                     </div>
 
                                 </Box>
-                                <Button onClick={()=>sendData(item)} type={"submit"} variant={"outlined"}>Submit</Button>
+                                <Button onClick={() => sendData(item)} type={"submit"}
+                                        variant={"outlined"}>Submit</Button>
                             </FormControl>
 
 
@@ -342,7 +359,6 @@ const MyBusinesses = () => {
                     </Modal>
 
                 </div>
-
 
 
             ))

@@ -35,7 +35,7 @@ const AboutBusiness = (props) => {
     return (
         <div>
             <Navbar/>
-            <Box display={"flex"} justifyContent={"center"} alignItems={"center"} alignContent={"center"} flexDirection={"column"}>
+            <Box display={"flex"} style={{flexWrap:"wrap"}} justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
                 <Box>
                     <Typography variant={"h4"} >CEO: {business?.ceoName}</Typography>
                     <Typography variant={"h4"} >Address: {business?.address}</Typography>

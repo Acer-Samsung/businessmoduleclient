@@ -21,7 +21,7 @@ const SignUp = (props) => {
                 let a = e.target.value;
                 setpassword(a)
                 setIsDisabled(!isDisabled);
-            }else {
+            } else {
                 setIsDisabled(true)
             }
         }
@@ -73,7 +73,7 @@ const SignUp = (props) => {
                         variant="filled"
                         defaultValue={"11111115"}
                         placeholder={"max 8 digits"}
-                        onChange={(e)=> {
+                        onChange={(e) => {
                             handleOnChange(e);
                             setDataUser(e)
                         }}
@@ -108,9 +108,8 @@ const SignUp = (props) => {
                         }}
                     >
                         Sign Up</Button>
-                    <Link style={{textDecoration: "none", color: "black",textAlign:"center"}} to={"/SignIn"}>Have an account? <br/> <span style={{color:"blue"}}>Sign In here</span></Link>
-
-
+                    <Link style={{textDecoration: "none", color: "black", textAlign: "center"}} to={"/SignIn"}>Have an
+                        account? <br/> <span style={{color: "blue"}}>Sign In here</span></Link>
 
                 </Box></form>
         </Box>
