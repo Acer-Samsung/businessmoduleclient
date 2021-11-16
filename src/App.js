@@ -13,6 +13,7 @@ import Applicants from "./Components/Applicants";
 import Notifications from "./Pages/Notifications";
 import Businesses from "./Pages/Businesses";
 import MyBusinesses from "./Pages/MyBusinesses";
+import AboutBusiness from "./Pages/AboutBusiness";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                     <Route exact path={"/SignIn"} component={SignIn}/>
                     <Route exact path={"/SignUp"} component={SignUp}/>
                     <Route exact path={"/businesses"} component={Businesses}/>
+                    <Route exact path={"/aboutbusiness/:ID"} component={AboutBusiness}/>
                     <PrivateRoute exact path={"/vacancies"} component={Vacancies}/>
                     <PrivateRoute exact path={"/mybusinesses"} component={MyBusinesses}/>
                     <PrivateRoute exact path={"/admin"} component={Admin}/>

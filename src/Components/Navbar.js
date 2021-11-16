@@ -231,6 +231,7 @@ const Navbar = (props) => {
                             value={officeType}
                             label="Office Type"
                             onChange={handleChange}
+                            required={"true"}
                         >
                             <MenuItem value={"SP"}>Sole Proprietorship</MenuItem>
                             <MenuItem value={"CORP"}>Corporation</MenuItem>
@@ -243,6 +244,7 @@ const Navbar = (props) => {
                                 type="text"
                                 variant="filled"
                                 onKeyUp={setDataUser}
+                                required={"true"}
                             />
 
                             {/*<InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}*/}
@@ -255,6 +257,7 @@ const Navbar = (props) => {
                                 onChange={(e) => {
                                     mapDistricts(e)
                                 }}
+                                required={"true"}
                             >
                                 {
                                     districts.map((item) => (
@@ -271,6 +274,7 @@ const Navbar = (props) => {
                                 onChange={(e) => {
                                     mapStreets(e)
                                 }}
+                                required={"true"}
                             >
                                 {
                                     streets.map((item) => (
@@ -287,6 +291,7 @@ const Navbar = (props) => {
                                 onChange={(e)=>{
                                     mapBuildings(e)
                                 }}
+                                required={"true"}
                             >
                                 {
                                     buildings.map((item) => (
@@ -304,6 +309,7 @@ const Navbar = (props) => {
                                     setSelectedOffice(e.target.value);
                                     setDataUser(e)
                                 }}
+                                required={"true"}
                             >
                                 {
                                     offices.map((item) => (

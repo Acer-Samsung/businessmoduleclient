@@ -185,10 +185,6 @@ const Vacancies = (props) => {
             <Navbar/>
             {
                 loading ? <div style={{display:"flex",justifyContent:"center",alignItems:"center",alignContent:"center",height:"70vh"}}><CircularProgress size={75} /></div> : <Container style={{marginTop: "30px"}}>
-                    <Box style={{display: "flex", justifyContent: "center"}}>
-                        <Button onClick={handleOpen} style={{display: `${role === "ROLE_CITIZEN" ? "none" : "block"}`}}
-                                variant={"outlined"}>Add Vacancy</Button>
-                    </Box>
                     <Modal open={open} onClose={() => {
                         handleClose();
                         setIsEdit(false)

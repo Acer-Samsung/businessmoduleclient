@@ -64,6 +64,73 @@ const MyBusinesses = () => {
         }
     }
 
+    let [jobTitle, setJobTitle] = useState("");
+    let [description, setDescription] = useState("");
+    let [salary, setSalary] = useState("");
+
+    const setDataFunc = (e) => {
+        switch (e.target.id) {
+            case "JobTitle": {
+                return setJobTitle(e.target.value);
+            }
+            case "JobDescription": {
+                return setDescription(e.target.value);
+            }
+            case "salary": {
+                return setSalary(e.target.value);
+            }
+        }
+    }
+
+    const sendData = (item) => {
+        let data = {
+            jobTitle: jobTitle,
+            description: description,
+            salary: salary,
+        }
+
+        console.log(item)
+
+        if (isEdit) {
+            console.log("is edit true");
+            axios.put(`${API_PATH}/api/v1/vacancies/myVacancies/${itemID}`, data, {headers: {Authorization: AuthStr}})
+                .then((res) => {
+                    console.log(res)
+                    handleClose()
+                    setIsEdit(false);
+                    // window.location.reload();
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
+
+        } else {
+            console.log("is edit false");
+
+            axios.post(`${API_PATH}/api/v1/vacancies/${item.id}`, data, {headers: {Authorization: AuthStr}})
+                .then((res) => {
+                    console.log(res)
+                    handleClose()
+                    // window.location.reload();
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
+        }
+    }
+    const [file, setFile] = useState({});
+
+    const handleFile = e => {
+        setFile({file: e.target.files[0]});
+    };
+
+    const [isEdit, setIsEdit] = useState(false);
+
+    const editVacancy = (itemid) => {
+        setItemID(itemid);
+        handleOpen()
+    }
+
     const getBusiness = () => {
         axios.get(`${API_PATH}/api/v1/businesses/my`, {headers: {Authorization: AuthStr}})
             .then((res) => {
@@ -79,7 +146,7 @@ const MyBusinesses = () => {
     }
 
     useEffect(() => {
-        getBusiness()
+        getBusiness();
     }, [])
 
     const editBusiness = () => {
@@ -91,15 +158,15 @@ const MyBusinesses = () => {
         }
 
         axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
-            .then((res)=>{
+            .then((res) => {
                 console.log(res)
                 handleClose()
                 getBusiness()
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.log(err)
             })
-            .finally(()=>{
+            .finally(() => {
 
             })
 
@@ -199,22 +266,85 @@ const MyBusinesses = () => {
                                     color={"black"}><span style={{fontWeight: "550"}}>Address: </span>{item.address}
                                 </Typography>
                                 <Typography
-                                    color={"black"}>{item.description ? <><span style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
+                                    color={"black"}>{item.description ? <><span
+                                    style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
                                 </Typography>
                                 <Typography
                                     color={"black"}>{item.motto ?
                                     <><span style={{fontWeight: "550"}}>Motto:</span> {item.motto}</> : ""}
                                 </Typography>
                             </div>
-                            <Button variant={"contained"} style={{margin: "10px 0 -10px 0"}} onClick={() => {
-                                handleOpen();
-                                setItemID(item.id)
-                            }}>Edit</Button>
+
+                            <Box style={{display: "flex", alignItems: "center"}}>
+                                <Button variant={"contained"} style={{margin: "10px 0 -10px 0"}} onClick={() => {
+                                    handleOpen();
+                                    setItemID(item.id)
+                                }}>Edit</Button>
+
+                                <Button onClick={handleOpen}
+                                        style={{margin: "10px 0 -10px 10px"}}
+                                        variant={"outlined"}>Add Vacancy</Button>
+                            </Box>
 
 
                         </CardContent>
                     </Collapse>
+
+                    <Modal open={open} onClose={() => {
+                        handleClose();
+                        setIsEdit(false)
+                    }} aria-labelledby="modal-modal-title"
+                           aria-describedby="modal-modal-description">
+                        <Box sx={style}>
+
+                            <FormControl fullWidth>
+                                <Box width={"100%"} display={"flex"} flexDirection={"column"}>
+                                    <TextField
+                                        id="JobTitle"
+                                        label="Job Title"
+                                        type="text"
+                                        variant="outlined"
+                                        onChange={setDataFunc}
+                                    />
+
+                                    <TextareaAutosize
+                                        style={{margin: "25px 0 20px 0"}}
+                                        id="JobDescription"
+                                        minRows={10}
+                                        placeholder="Job Description"
+                                        onChange={setDataFunc}
+                                    />
+
+                                    <div style={{
+                                        display: "flex",
+                                        width: "100%",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        margin: "0 0 20px 0"
+                                    }}>
+                                        <AttachMoneyIcon color={"action"}/>
+                                        <TextField
+                                            fullWidth
+                                            id="salary"
+                                            label="Salary"
+                                            type="number"
+                                            variant="outlined"
+                                            onChange={setDataFunc}
+                                        />
+                                    </div>
+
+                                </Box>
+                                <Button onClick={()=>sendData(item)} type={"submit"} variant={"outlined"}>Submit</Button>
+                            </FormControl>
+
+
+                        </Box>
+                    </Modal>
+
                 </div>
+
+
+
             ))
             }
         </div>
