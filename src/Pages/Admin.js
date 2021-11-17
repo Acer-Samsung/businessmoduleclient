@@ -72,7 +72,9 @@ const Admin = () => {
                         <Typography variant={"h2"}>First name: {userInfo.firstName}</Typography>
                         <Typography variant={"h2"}>Last name:{userInfo.lastName}</Typography>
                         <Typography variant={"h2"}>Birth date: {userInfo.birthDate}</Typography>
-                        <Typography variant={"h2"}>{userInfo.employer ? `Employer: ${userInfo.employer.name}` : ""}</Typography>
+                        <Typography variant={"h2"}>Gender: {userInfo.gender}</Typography>
+                        <Typography variant={"h2"}>Marital Status: {userInfo.maritalStatus}</Typography>
+                        <Typography variant={"h2"}>{!userInfo.employer ? <span><span style={{fontWeight:"bold"}}>Employer:</span>{/*{userInfo.employer.name}*/}{userInfo.gender}</span> : ""}</Typography>
                         {role === "ROLE_BUSINESS_OWNER" ? <Link style={{textDecoration:"none",color:"blue"}} to={"/mybusinesses"}>Click to see your businesses</Link> : ""}
                     </div>
 
