@@ -84,32 +84,15 @@ const MyBusinesses = () => {
 
         console.log(item)
 
-        if (isEdit) {
-            console.log("is edit true");
-            axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
-                .then((res) => {
-                    console.log(res)
-                    handleClose()
-                    setIsEdit(false);
-                    // window.location.reload();
-                })
-                .catch((err) => {
-                    console.log(err.message)
-                })
-
-        } else {
-            console.log("is edit false");
-
-            axios.post(`${API_PATH}/api/v1/vacancies/${item.id}`, data, {headers: {Authorization: AuthStr}})
-                .then((res) => {
-                    console.log(res)
-                    handleClose()
-                    // window.location.reload();
-                })
-                .catch((err) => {
-                    console.log(err.message)
-                })
-        }
+        axios.post(`${API_PATH}/api/v1/vacancies/${item.id}`, data, {headers: {Authorization: AuthStr}})
+            .then((res) => {
+                console.log(res)
+                handleClose()
+                // window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
     }
 
     const [isEdit, setIsEdit] = useState(false);
@@ -143,9 +126,9 @@ const MyBusinesses = () => {
             }
         } else {
             let a = e.target.value.toString().trim();
-            if (a.length < 1000){
+            if (a.length < 1000) {
                 setBusDesc(a);
-            }else {
+            } else {
                 toast.error("Word Limit 1000")
             }
         }
@@ -159,7 +142,7 @@ const MyBusinesses = () => {
             motto: motto
         }
 
-        axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
+        axios.put(`${API_PATH}/api/v1/businesses/my/${itemID.id}/saveChanges`, data, {headers: {Authorization: AuthStr}})
             .then((res) => {
                 console.log(res)
                 handleCloseEdit()
@@ -186,12 +169,13 @@ const MyBusinesses = () => {
 
                         <FormGroup>
                             <InputLabel style={{backgroundColor: "#fff", padding: "0 5px 0 0"}}
-                                        id="demo-simple-select-label">Company Type</InputLabel>
+                                        id="demo-simple-select-label">Company Type = {itemID.businessType}</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="OfficeType"
                                 value={officeType}
-                                label="Office Type"
+                                defaultValue={"CORP"}
+                                label={`Office Type`}
                                 onChange={handleChange}
                                 required={"true"}
                             >
@@ -204,18 +188,21 @@ const MyBusinesses = () => {
                                     style={{margin: "5px 0 20px 0"}}
                                     id="Motto"
                                     label="Motto"
+                                    placeholder={""}
                                     type="text"
-                                    variant="filled"
+                                    variant="standard"
                                     onKeyUp={setDataUserEdit}
                                     required={true}
+                                    defaultValue={itemID.motto}
                                 />
 
                                 <TextareaAutosize
                                     style={{margin: "5px 0 20px 0"}}
                                     id="Description"
                                     minRows={10}
-                                    placeholder="Description"
+                                    // placeholder="Description"
                                     onChange={setDataUserEdit}
+                                    defaultValue={itemID.description}
                                 />
 
                                 {/*<TextField*/}
@@ -273,9 +260,9 @@ const MyBusinesses = () => {
                                 flexDirection: "column",
                             }}>
                                 <Typography
-                                color={"black"}>{item.description ? <><span
-                                style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
-                            </Typography>
+                                    color={"black"} style={{wordBreak: "break-word"}}>{item.description ? <><span
+                                    style={{fontWeight: "550"}}>Description:</span> {item.description}</> : ""}
+                                </Typography>
                                 <Typography
                                     color={"black"}>{item.motto ?
                                     <><span style={{fontWeight: "550"}}>Motto:</span> {item.motto}</> : ""}
@@ -294,7 +281,8 @@ const MyBusinesses = () => {
                                 <Button variant={"contained"} style={{margin: "10px 0 -10px 0"}} onClick={() => {
                                     handleOpenEdit();
                                     setIsEdit(true)
-                                    setItemID(item.id)
+                                    setItemID(item)
+                                    console.log(item)
                                 }}>Edit</Button>
 
                                 <Button onClick={handleOpen}

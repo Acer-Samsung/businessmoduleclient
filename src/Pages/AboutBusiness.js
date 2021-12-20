@@ -35,15 +35,15 @@ const AboutBusiness = (props) => {
     return (
         <div>
             <Navbar/>
-            <Box display={"flex"} style={{flexWrap:"wrap"}} justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
-                <Box>
-                    <Typography variant={"h4"} >CEO: {business?.ceoName}</Typography>
-                    <Typography variant={"h4"} >Address: {business?.address}</Typography>
-                    <Typography variant={"h4"} >Business Type: {business?.businessType}</Typography>
-                    <Typography variant={"h4"} >Created At: {business?.createdAt}</Typography>
-                    <Typography variant={"h4"} >{business.description? `Description: ${business.description}` : ""}</Typography>
-                    <Typography variant={"h4"} >{business.motto? `Motto: ${business.motto}` : ""}</Typography>
-                    <Typography variant={"h4"} >Company Name: {business?.name}</Typography>
+            <Box display={"flex"} style={{flexWrap:"wrap",height:"93.5vh"}} justifyContent={"center"} alignItems={"center"} flexDirection={"column"}>
+                <Box style={{margin:"0 auto",width:"750px"}}>
+                    <Typography variant={"h4"} ><span style={{fontWeight:"550"}}>CEO: </span>{business?.ceoName}</Typography>
+                    <Typography variant={"h4"} ><span style={{fontWeight:"550"}}>Address:</span> {business?.address}</Typography>
+                    <Typography variant={"h4"} ><span style={{fontWeight:"550"}}>Business Type: </span> {business?.businessType}</Typography>
+                    <Typography variant={"h4"} ><span style={{fontWeight:"550"}}>Created At: </span>{business?.createdAt}</Typography>
+                    <Typography variant={"h4"} style={{wordWrap:"break-word"}} > {business.description? <span><span style={{fontWeight:"550"}}>Description: </span> {business.description}</span> : ""}</Typography>
+                    <Typography variant={"h4"} >{business.motto? <span><span style={{fontWeight:"550"}}>Motto:</span>{business.motto}</span> : ''}</Typography>
+                    <Typography variant={"h4"} ><span style={{fontWeight:"550"}}>Company Name: </span>{business?.name}</Typography>
                 </Box>
                 <Box style={{display:"flex",flexDirection:"column",textAlign:'center',margin:"20px 0 0 0 "}} width={"40%"}>
                     <Typography variant={"h4"} style={{marginBottom:"10px"}}>Employees: </Typography>
