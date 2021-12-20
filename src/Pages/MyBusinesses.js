@@ -86,7 +86,7 @@ const MyBusinesses = () => {
 
         if (isEdit) {
             console.log("is edit true");
-            axios.put(`${API_PATH}/api/v1/businesses/my/${itemID}/saveChanges`, data, {headers: {Authorization: AuthStr}})
+            axios.post(`${API_PATH}/api/v1/vacancies/${item.id}`, data, {headers: {Authorization: AuthStr}})
                 .then((res) => {
                     console.log(res)
                     handleClose()
